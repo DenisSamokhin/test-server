@@ -1,7 +1,0 @@
-{
-    "host": "ec2-79-125-118-221.eu-west-1.compute.amazonaws.com",
-    "user": "bafzpbjmzesill",
-    "password": "2de77cf7ecce5a464df9336cb86fc9014d98967f24d67c2cf121d694e0083325",
-    "database": "dfvqtn69p609eu",
-    "port": 5432
-}
