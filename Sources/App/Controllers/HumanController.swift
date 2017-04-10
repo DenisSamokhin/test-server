@@ -22,11 +22,11 @@ final class HumanController {
     
     func create(_ request: Request) throws -> ResponseRepresentable {
         if request.isContentTypeAcceptable() {
-            guard let name = request.data["fullname"]?.string, let age = request.data["age"]?.int, let email = request.data["email"]?.string, let image = request.data["image"] else {
+            guard let name = request.data["fullname"]?.string, let age = request.data["age"]?.int, let email = request.data["email"]?.string else {
                     throw Abort.custom(status: .badRequest, message: "Some parameters are missed.")
             }
-            try request.saveImage()
-            var person = Human(name: name, email: email, age: age)
+            let imageURL = try request.saveImage()
+            var person = Human(name: name, email: email, age: age, imageURL: imageURL)
             try person.save()
             return try person.makeJSON()
         }else {
@@ -45,22 +45,19 @@ extension Request {
         }
     }
     
-    func saveImage() throws {
-        guard let fileData = self.formData?["image"]?.part.body, let fileName = self.formData?["fileName"]?.string else {
+    func saveImage() throws -> String {
+        guard let fileData = self.formData?["image"]?.part.body, let fileName = self.formData?["image"]?.filename else {
             throw Abort.custom(status: .badRequest, message: "No file in request")
         }
-        
-//        guard  else {
-//            throw Abort.custom(status: .internalServerError, message: "Missing working directory")
-//        }
         let workPath = Droplet().workDir
-        let name = UUID().uuidString + "_" + fileName + ".png"
+        let name = UUID().uuidString + "_" + fileName
         let imageFolder = "Public/images/event-images"
         let saveURL = URL(fileURLWithPath: workPath).appendingPathComponent(imageFolder, isDirectory: true).appendingPathComponent(name, isDirectory: false)
         
         do {
             let data = Data(bytes: fileData)
             try data.write(to: saveURL)
+            return saveURL.absoluteString
         } catch {
             throw Abort.custom(status: .internalServerError, message: "Unable to write multipart form data to file. Underlying error \(error)")
         }
