@@ -15,12 +15,14 @@ final class Human: Model {
     var email: String
     var id: Node?
     var age: Int
+    var imageURL: String
     var exists: Bool = false
     
-    init(name:String, email:String, age:Int) {
+    init(name:String, email:String, age:Int, imageURL:String) {
         self.name = name
         self.email = email
         self.age = age
+        self.imageURL = imageURL
     }
     
     init(node: Node, in context: Context) throws {
@@ -28,6 +30,7 @@ final class Human: Model {
         name = try node.extract("name")
         email = try node.extract("email")
         age = try node.extract("age")
+        imageURL = try node.extract("image_url")
     }
     
     func makeNode(context: Context) throws -> Node {
@@ -35,7 +38,8 @@ final class Human: Model {
             "id": id,
             "name": name,
             "email": email,
-            "age": age
+            "age": age,
+            "image_url":imageURL
             ])
     }
     
@@ -45,6 +49,7 @@ final class Human: Model {
             person.string("name")
             person.string("email")
             person.int("age")
+            person.string("image_url")
         }
     }
     

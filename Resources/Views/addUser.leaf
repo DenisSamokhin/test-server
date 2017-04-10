@@ -1,0 +1,24 @@
+#extend("base")
+
+#export("head") {
+<title>Add User</title>
+
+<link href="https://fonts.googleapis.com/css?family=Quicksand:400,700,300" rel="stylesheet">
+<link rel="stylesheet" href="/styles/app.css">
+}
+
+#export("body") {
+<div class="form">
+<h1>Add User</h1>
+<form action="users/add" method="POST" enctype="multipart/form-data">
+<!--
+Description: <textarea name="name" cols="30" rows="3"></textarea><br/>
+-->
+Name: <input type="text" name="fullname"><br/>
+Age: <input type="text" name="age"><br/>
+Email: <input type="text" name="email"><br/>
+<input type="file" name="image"><br/>
+<input type="submit" value="Submit">
+</form>
+</div>
+}
