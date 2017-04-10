@@ -4,6 +4,7 @@ import VaporPostgreSQL
 let drop = Droplet()
 try drop.addProvider(VaporPostgreSQL.Provider.self)
 drop.preparations += Human.self
+drop.preparations += Event.self
 
 drop.get { req in
     return try drop.view.make("welcome", [
@@ -71,6 +72,12 @@ drop.get("humans") { request in
 drop.get("aloha") { req in
     return try JSON(node: ["privet": "Andrey"])
 }
+
+// MARK: - human endpoints
+
+let humans = HumanController()
+drop.get("users", handler:humans.index)
+drop.post("users/add", handler:humans.create)
 
 drop.resource("posts", PostController())
 
