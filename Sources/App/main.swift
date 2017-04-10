@@ -5,6 +5,7 @@ let drop = Droplet()
 try drop.addProvider(VaporPostgreSQL.Provider.self)
 drop.preparations += Human.self
 drop.preparations += Event.self
+drop.preparations.append(Human.self)
 
 drop.get { req in
     return try drop.view.make("welcome", [
