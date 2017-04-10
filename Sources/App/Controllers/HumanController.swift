@@ -22,7 +22,7 @@ final class HumanController {
     
     func create(_ request: Request) throws -> ResponseRepresentable {
         if request.isContentTypeAcceptable() {
-            guard let name = request.json?["name"]?.string, let age = request.json?["age"]?.int, let email = request.json?["email"]?.string else {
+            guard let name = request.data["fullname"]?.string, let age = request.data["age"]?.int, let email = request.data["email"]?.string, let image = request.data["image"] else {
                     throw Abort.custom(status: .badRequest, message: "Some parameters are missed.")
             }
             var person = Human(name: name, email: email, age: age)
@@ -37,7 +37,7 @@ final class HumanController {
 
 extension Request {
     func isContentTypeAcceptable() -> Bool {
-        if let contentType = self.headers["Content-Type"], contentType.contains("application/json") {
+        if let contentType = self.headers["Content-Type"], contentType.contains("multipart/form-data") {
             return true
         }else {
             return false

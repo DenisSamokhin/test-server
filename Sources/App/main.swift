@@ -73,6 +73,12 @@ drop.get("aloha") { req in
     return try JSON(node: ["privet": "Andrey"])
 }
 
+// MARK: - Views endpoints
+
+drop.get("addUser") { req in
+    return try drop.view.make("addUser")
+}
+
 // MARK: - human endpoints
 
 let humans = HumanController()
