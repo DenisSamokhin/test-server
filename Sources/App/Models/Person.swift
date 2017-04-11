@@ -44,7 +44,7 @@ final class Human: Model {
     }
     
     static func prepare(_ database: Database) throws {
-        try database.create("humans") { (person) in
+        try database.create("test_users") { (person) in
             person.id()
             person.string("name")
             person.string("email")
@@ -54,6 +54,18 @@ final class Human: Model {
     }
     
     static func revert(_ database: Database) throws {
-        try database.delete("humans")
+        try database.delete("test_users")
+    }
+}
+
+struct AddImageUrlToHumans: Preparation {
+    static func prepare(_ database: Database) throws {
+        try database.modify("humans", closure: { bar in
+            bar.string("image_url", length: 250, optional: false, unique: false, default: nil)
+        })
+    }
+    
+    static func revert(_ database: Database) throws {
+        
     }
 }
