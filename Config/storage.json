@@ -1,0 +1,8 @@
+{
+    "driver": "s3",
+    "accessKey": "AKIAJCJMPE7BM7DIKZJQ",
+    "secretKey": "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",
+    "host": "s3.amazonaws.com",
+    "bucket": "today-app-storage",
+    "region": "eu-central-1"
+}

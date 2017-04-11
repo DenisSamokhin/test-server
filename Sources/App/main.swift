@@ -1,8 +1,11 @@
 import Vapor
 import VaporPostgreSQL
+import Storage
 
 let drop = Droplet()
 try drop.addProvider(VaporPostgreSQL.Provider.self)
+try drop.addProvider(StorageProvider.self)
+
 drop.preparations += Human.self
 drop.preparations += Event.self
 drop.preparations.append(Human.self)

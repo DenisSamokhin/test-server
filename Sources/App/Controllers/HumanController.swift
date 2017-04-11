@@ -9,8 +9,10 @@
 import Foundation
 import Vapor
 import HTTP
+import Storage
 
 final class HumanController {
+
     
     func index(request: Request) throws -> ResponseRepresentable {
         return try Human.all().makeNode().converted(to: JSON.self)
@@ -49,15 +51,13 @@ extension Request {
         guard let fileData = self.formData?["image"]?.part.body, let fileName = self.formData?["image"]?.filename else {
             throw Abort.custom(status: .badRequest, message: "No file in request")
         }
-        let workPath = Droplet().workDir
-        let name = UUID().uuidString + "_" + fileName
-        let imageFolder = "Public/images/event-images"
-        let saveURL = URL(fileURLWithPath: workPath).appendingPathComponent(imageFolder, isDirectory: true).appendingPathComponent(name, isDirectory: false)
+        let name = UUID().uuidString + "_" + fileName.replacingOccurrences(of: " ", with: "_")
+        let imageFolder = "content/event-images"
+        
         
         do {
-            let data = Data(bytes: fileData)
-            try data.write(to: saveURL)
-            return saveURL.absoluteString
+            let path = try Storage.upload(bytes: fileData, fileName: name, folder: imageFolder)
+            return path
         } catch {
             throw Abort.custom(status: .internalServerError, message: "Unable to write multipart form data to file. Underlying error \(error)")
         }
